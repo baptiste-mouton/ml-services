@@ -1,0 +1,24 @@
+<%- include('header') -%>
+
+<h1>Créneaux disponibles</h1>
+<table>
+    <tr class="table-primary">...
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Début</th>
+        <th scope="col">Fin</th>
+    </tr>
+    </thead>
+    <tbody>
+        <% for (creneau of creneaux) { %>
+        <tr>
+            <td>1</td>
+            <td><%= creneau.heureDebut %></td>
+            <td><%= creneau.heureFin %></td>
+        </tr>
+        <% } %>
+    </tbody>
+    </tr>
+</table>
+
+<%- include('footer') -%>
