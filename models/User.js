@@ -1,7 +1,7 @@
 let connection = require('../config/dbConfig');
 
 class Utilisateur {
-    
+
     static create(values,cb){
         connection.query('INSERT INTO Utilisateur SET ? ;',values, (err,rows) => {
             if(err) throw err
@@ -22,6 +22,12 @@ class Utilisateur {
     }
     static findByMail(values,cb){
         connection.query('SELECT * FROM Utilisateur WHERE emailUser = ? LIMIT 1', values, (err,rows) => {
+            if(err) throw err
+            cb(rows);
+        })
+    }
+    static getProfileInfos(values,cb){
+        connection.query('SELECT idUser, emailUser, nomUser, prenomUser FROM Utilisateur WHERE idUser = ? LIMIT 1',values, (err,rows) => {
             if(err) throw err
             cb(rows);
         })

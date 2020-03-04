@@ -1,22 +1,41 @@
 let express = require('express');
 let router = express.Router();
 let bcrypt = require('bcrypt');
-let mysqlConnection = require('../config/dbConfig');
+var jwtUtils = require('../utils/jwt.utils')
 
-function isEmpty(obj) {
-    return !Object.keys(obj).length > 0;
-  };
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
+//ROUTES : 
 
-//Login :
+//Login Page:
 router.get('/login', (req, res) => {
     res.render('login')
 });
 
-//Register :
+//Register Page:
 router.get('/register', (req, res) => {
     res.render('register')
 });
 
+router.get('/profil', (req,res) => {
+    var headerAuth = req.headers['authorization'];
+    console.log(headerAuth)
+    var userId = jwtUtils.getUserId(headerAuth);
+
+    if(userId<0){
+        return res.status(400).json({'error': 'Wrong token!'});
+    }
+    
+    let User = require('../models/User');
+    User.getProfileInfos(userId, (user) => {
+        if(user[0] != undefined){
+            res.status(201).json(user[0]);
+        } else {
+            res.status(404).json({'error': 'user not found'});
+        }
+    })
+})
+//Page creneau :
 router.get('/creneaux', (req,res) => {
     let Creneaux = require('../models/Creneau');
     Creneaux.all(function(creneaux){
@@ -24,7 +43,7 @@ router.get('/creneaux', (req,res) => {
     })
 })
 
-//test:
+//REGISTER : 
 router.post('/register',(req,res) => {
     var lastName = req.body.name;
     var firstName = req.body.firstName;
@@ -37,6 +56,18 @@ router.post('/register',(req,res) => {
 
     if(lastName == undefined || firstName == undefined || password == undefined || email == undefined || st == undefined || zip == undefined || city == undefined){
         return res.status(400).json({'error': 'missing parameters'});
+    }
+
+    if (lastName.length > 12 || lastName.length < 2) {
+        return res.status(400).json({'error': 'Le nom doit contenir entre 2 et 12 carractères'});
+    }
+
+    if(!EMAIL_REGEX.test(email)){
+        return res.status(400).json({'error': 'L\'email n\'est pas conforme'});
+    }
+
+    if(!PASSWORD_REGEX.test(password)){
+        return res.status(400).json({'error': 'Le mot de passe n\'est pas conforme. (Il doit contenir entre 4 et 8 caractères dont au moins 1 chiffre!)'});
     }
 
     //TODO verify pseudo length, mail regex, password...
@@ -69,7 +100,7 @@ router.post('/register',(req,res) => {
     })
 });
 
-    
+//LOGIN
 router.post('/login', (req,res)=>{
     var email = req.body.email;
     var password = req.body.password;
@@ -87,7 +118,7 @@ router.post('/login', (req,res)=>{
                 if(compare){
                     return res.status(200).json({
                         'userId': users[0].idUser,
-                        'token': 'THE TOKEN'});
+                        'token': jwtUtils.createToken(users[0]) });
                 }else{
                     return res.status(400).json({'error': 'Email ou mot de passe inconnu'});
                     }
