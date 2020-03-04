@@ -8,14 +8,14 @@ router.get('/', (req, res) => {
     Creneaux.all(function(creneaux){
         res.render('index', {creneaux: creneaux})
     })
-    /*mysqlConnection.query('SELECT * FROM Creneau', (err,rows,field) => {
-        if(!err){
-            var creneaux = rows
-            res.render('index',{creneaux: creneaux})
-        }else{
-            console.log(err)
-        }
-    })*/
+    
+});
+
+router.get('/creneaux', (req, res) => {
+    let Creneaux = require('../models/Creneau');
+    Creneaux.all(function(creneaux){
+        res.render('creneaux', {creneaux: creneaux})
+    })
     
 });
 
