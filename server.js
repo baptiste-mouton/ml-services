@@ -1,7 +1,7 @@
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-//let mysqlConnection = require('./config/dbConfig');
+let {check, validationResult} = require('express-validator');
 
 const PORT = process.env.PORT || 8080;
 

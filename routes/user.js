@@ -1,7 +1,8 @@
 let express = require('express');
 let router = express.Router();
 let bcrypt = require('bcrypt');
-var jwtUtils = require('../utils/jwt.utils')
+let jwtUtils = require('../utils/jwt.utils')
+let {check,validationResult} = require('express-validator');
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
@@ -44,7 +45,13 @@ router.get('/creneaux', (req,res) => {
 })
 
 //REGISTER : 
-router.post('/register',(req,res) => {
+router.post('/register',
+[
+    check('email').isEmail().normalizeEmail(),
+    check('password').isLength({min: 6, max:12}),
+    check('name').isLength({min:2})
+],
+(req,res) => {
     var lastName = req.body.name;
     var firstName = req.body.firstName;
     var password = req.body.password;
@@ -54,6 +61,12 @@ router.post('/register',(req,res) => {
     var zip = req.body.zip;
     var city = req.body.city;
 
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        return res.status(400).json({'error': 'Missing or wrong parameters'});
+    }
+    /* Vérifs avec express-validator plus efficace
     if(lastName == undefined || firstName == undefined || password == undefined || email == undefined || st == undefined || zip == undefined || city == undefined){
         return res.status(400).json({'error': 'missing parameters'});
     }
@@ -68,9 +81,9 @@ router.post('/register',(req,res) => {
 
     if(!PASSWORD_REGEX.test(password)){
         return res.status(400).json({'error': 'Le mot de passe n\'est pas conforme. (Il doit contenir entre 4 et 8 caractères dont au moins 1 chiffre!)'});
-    }
+    } */
 
-    //TODO verify pseudo length, mail regex, password...
+    
     console.log(email);
     let User = require('../models/User')
     User.findByMail(email, (users) => {
