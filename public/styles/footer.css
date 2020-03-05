@@ -1,0 +1,27 @@
+#flexFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    font-size: x-small;
+    width:100%;
+    max-height: 100%;
+    position: absolute;
+    bottom: 0;
+}
+.apropos{
+    width: 20%;
+    margin-right: 5%;
+}
+.questions{
+    padding: 0 5% 0 5%;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    max-height: 5%;
+    width: 25%;
+}
+
+.liensUtiles{
+    margin-left: 5%;
+    width: 20%;
+}
