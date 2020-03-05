@@ -2,13 +2,27 @@ let express = require('express');
 let router = express.Router();
 let bcrypt = require('bcrypt');
 let jwtUtils = require('../utils/jwt.utils')
+let cookie = require('cookie');
 let {check,validationResult} = require('express-validator');
+
 
 //const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 //ROUTES : 
 
+//User's Home:
+router.get('/myHome',jwtUtils.authentification, (req,res) => {
+    let User = require('../models/User');
+    var userId = req.user.userId;
+    User.getProfileInfos(userId, (user) => {
+        if(user[0] != undefined){
+            res.status(201).render('./privateRoutes/usersHome',{'user':user[0]});
+        } else {
+            res.status(404).json({'error': 'user not found'});
+        }
+})
+})
 //Login Page:
 router.get('/login', (req, res) => {
     res.render('login')
@@ -19,8 +33,8 @@ router.get('/register', (req, res) => {
     res.render('register')
 });
 
-router.get('/profil', (req,res) => {
-    var headerAuth = req.headers['authorization'];
+router.get('/myProfil', jwtUtils.authentification, (req,res) => {
+    /*var headerAuth = req.headers['authorization'];
     console.log(headerAuth)
     var userId = jwtUtils.getUserId(headerAuth);
 
@@ -32,10 +46,27 @@ router.get('/profil', (req,res) => {
     User.getProfileInfos(userId, (user) => {
         if(user[0] != undefined){
             res.status(201).json(user[0]);
+            res.render('/profil',{user:user[0]});
         } else {
             res.status(404).json({'error': 'user not found'});
         }
-    })
+    })*/
+
+    let User = require('../models/User');
+    var userId = req.user.userId;
+    User.getProfileInfos(userId, (user) => {
+        if(user[0] != undefined){
+            res.status(201).render('./privateRoutes/profil',{'user':user[0]});
+        } else {
+            res.status(404).json({'error': 'user not found'});
+        }
+})
+});
+//DISCONNECT : 
+router.get('/disconnect',jwtUtils.authentification, (req,res) => {
+    res.setHeader('Set-Cookie',cookie.serialize('authToken', ''));
+    console.log("You are logged off");
+    return res.status(302).redirect('/');
 })
 //Page creneau :
 router.get('/creneaux', (req,res) => {
@@ -117,22 +148,18 @@ router.post('/register',
 //LOGIN
 router.post('/login',
 [
-    check('email').isEmpty(),
-    check('password').isEmpty()
+    check('email').not().isEmpty(),
+    check('password').not().isEmpty()
 ],
 (req,res)=>{
     var email = req.body.email;
     var password = req.body.password;
 
     const errors = validationResult(req);
-    
+    console.log(errors);
     if(!errors.isEmpty()){
         return res.status(400).json({'error': 'Missing or wrong parameters'});
     }
-
-    /*if(email == undefined || password == undefined || email == '' || password == '') {
-        return res.status(400).json({'error': 'missing parameters'});
-    }*/
 
     let User = require('../models/User')
     User.findByMail(email,(users)=>{
@@ -141,9 +168,15 @@ router.post('/login',
         }else {
                 let compare = bcrypt.compareSync(password,users[0].password);
                 if(compare){
-                    return res.status(200).json({
-                        'userId': users[0].idUser,
-                        'token': jwtUtils.createToken(users[0]) });
+                    var authToken = jwtUtils.createToken(users[0]);
+
+                    res.setHeader('Set-Cookie', cookie.serialize('authToken','Bearer ' + authToken, { //Bearer : norme JW3
+                        httpOnly: true,
+                        maxAge: 60 * 60 // 1 h
+                      }));
+        
+                    return res.status(302).redirect('/user/myHome');
+                    
                 }else{
                     return res.status(400).json({'error': 'Email ou mot de passe inconnu'});
                     }
