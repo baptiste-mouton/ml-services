@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 
 //ROUTES : 
 app.use('/', require('./routes/home'));
-
 app.use('/user', require('./routes/user'));
+//app.use('/user/creneau', require('./routes/creneau'));
 
 
 app.listen(PORT, () => console.log(`Server up, listenning on port ${PORT} !`));

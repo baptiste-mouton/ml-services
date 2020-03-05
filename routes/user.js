@@ -10,7 +10,15 @@ let {check,validationResult} = require('express-validator');
 //const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 //ROUTES : 
-
+router.get('/creneaux', (req, res) => {
+    let Creneau = require('../models/creneau');
+    let week = Creneau.datesSemaineActuelle();
+    console.log(week);
+    Creneau.all(function(creneaux){
+        res.render('privateRoutes/creneaux', {jours: week,creneaux: creneaux})
+    })
+    
+});
 //User's Home:
 router.get('/myHome',jwtUtils.authentification, (req,res) => {
     let User = require('../models/User');
@@ -176,7 +184,7 @@ router.post('/login',
                       }));
         
                     return res.status(302).redirect('/user/myHome');
-                    
+
                 }else{
                     return res.status(400).json({'error': 'Email ou mot de passe inconnu'});
                     }
