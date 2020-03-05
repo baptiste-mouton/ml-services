@@ -4,8 +4,9 @@ let bcrypt = require('bcrypt');
 let jwtUtils = require('../utils/jwt.utils')
 let {check,validationResult} = require('express-validator');
 
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
+//const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
+
 //ROUTES : 
 
 //Login Page:
@@ -114,13 +115,24 @@ router.post('/register',
 });
 
 //LOGIN
-router.post('/login', (req,res)=>{
+router.post('/login',
+[
+    check('email').isEmpty(),
+    check('password').isEmpty()
+],
+(req,res)=>{
     var email = req.body.email;
     var password = req.body.password;
 
-    if(email == undefined || password == undefined || email == '' || password == '') {
-        return res.status(400).json({'error': 'missing parameters'});
+    const errors = validationResult(req);
+    
+    if(!errors.isEmpty()){
+        return res.status(400).json({'error': 'Missing or wrong parameters'});
     }
+
+    /*if(email == undefined || password == undefined || email == '' || password == '') {
+        return res.status(400).json({'error': 'missing parameters'});
+    }*/
 
     let User = require('../models/User')
     User.findByMail(email,(users)=>{
