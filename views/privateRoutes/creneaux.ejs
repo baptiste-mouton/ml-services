@@ -1,0 +1,32 @@
+<%- include('privateHeader') -%>
+
+<h1>Créneaux disponibles</h1>
+
+
+<form>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Sélectionnez un jour</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+            <% for(jour of jours) { %>
+            <option> <%= jour.toLocaleDateString() %> </option>
+            <% } %>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="jumbotron">
+            <h5>Sélectionnez un créneau</h5>
+            <p class="lead">
+                <hr class="my-4">
+                <div id="InputsGroup">
+                    <% for (creneau of creneaux) { %>
+                    <input id="cr<%= creneau.idCreneau %>" class="btn btn-primary" type="button"
+                        value="<%= creneau.heureDebut.replace('00:00','00') %> - <%= creneau.heureFin.replace('00:00','00') %>"></input>
+                    <% } %>
+                </div>
+            </p>
+
+        </div>
+    </div>
+</form>
+
+<%- include('../footer') -%>
