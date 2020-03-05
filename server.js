@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use('/', require('./routes/home'));
 app.use('/user', require('./routes/user'));
 //app.use('/user/creneau', require('./routes/creneau'));
+app.use('/services', require('./routes/home'));
 
 
 app.listen(PORT, () => console.log(`Server up, listenning on port ${PORT} !`));
