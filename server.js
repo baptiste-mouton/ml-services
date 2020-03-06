@@ -3,7 +3,6 @@ let app = express();
 let bodyParser = require('body-parser');
 let dotenv = require('dotenv');
 let helmet = require('helmet');
-let {check, validationResult} = require('express-validator');
 
 const PORT = process.env.PORT || 8080;
 
@@ -22,8 +21,12 @@ app.use(bodyParser.json());
 //ROUTES : 
 app.use('/', require('./routes/home'));
 app.use('/user', require('./routes/user'));
-//app.use('/user/creneau', require('./routes/creneau'));
+app.use('/creneau',require('./routes/creneau'));
 app.use('/services', require('./routes/home'));
+
+//app.use('/auth',jwt.authentification,require('./routes/auth'));
+//app.use('/auth/user', require('./models/User'));
+//app.use('/auth/creneau', require('./models/Creneau'));
 
 
 app.listen(PORT, () => console.log(`Server up, listenning on port ${PORT} !`));

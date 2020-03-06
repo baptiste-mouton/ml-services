@@ -1,3 +1,10 @@
+footer{
+    width:100%;
+    max-height: 100%;
+    position: absolute;
+    margin-bottom: 0%;
+}
+
 #flexFooter {
     display: flex;
     flex-direction: row;
@@ -5,7 +12,7 @@
     align-items: baseline;
     font-size: x-small;
     width:100%;
-    max-height: 100%;
+    /* max-height: 100%; */
     position: absolute;
     bottom: 0;
 }
@@ -25,3 +32,4 @@
     margin-left: 5%;
     width: 20%;
 }
+

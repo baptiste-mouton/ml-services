@@ -1,11 +1,17 @@
 .container{
     margin-top: 3%;
+    min-height: 100%;
+    margin-bottom: 15%;
 }
 
 #displayServices{
     width:100%;
     display: flex;
     justify-content: space-between;
+}
+
+.reservationsDisplay{
+    margin:3%;
 }
 
 #InputsGroup * {
@@ -15,4 +21,12 @@
 
 #jumbAccueil{
     margin: 3%;
+}
+
+#flashError{
+    margin-bottom: 3%;
+}
+
+#dateSelection{
+    margin-left: 43%;
 }
