@@ -1,0 +1,28 @@
+<%- include('privateHeader') -%>
+
+<h1>Bienvenue sur la page des créneaux réservés !</h1>
+
+<div class="reservationsDisplay">
+    <% if(interventions.length == 0) { %>
+
+    <div class="alert alert-primary" role="alert">
+        Vous n'avez aucune réservation à venir.
+    </div>
+
+    <% } else {%>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <th scope="col">Intervention(s) à venir : </th>
+        </thead>
+        <tbody>
+            <% for (intervention of interventions) { %>
+            <td class="table-active"> <%= intervention %> </td>
+            <% } %>
+        </tbody>
+    </table>
+
+    <% } %>
+
+</div>
+<%- include('../footer') -%>

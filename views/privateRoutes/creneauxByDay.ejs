@@ -1,0 +1,47 @@
+<%- include('privateHeader') -%>
+
+<h1> You're about to select a creneau !</h1>
+
+<div class="jumbotron">
+    <h5>Sélectionnez un service puis validez en sélectionnant un créneau parmis ceux disponibles le <%= date %> :</h5>
+    <p class="lead">
+        <hr class="my-4">
+
+        <form action="/creneau/select/byDate" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Sélectionnez un service</label>
+                <select name="selectedSer" class="form-control" id="exampleFormControlSelect1">
+                    <option> Ménage </option>
+                    <option> Repassage </option>
+                    <option> Cuisine </option>
+                    <option> Aide au déplacement </option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Information supplémentaire :</label>
+                <textarea name="descritpionIntervention" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                    placeholder="Vous pouvez saisir ici toute information complémentaire que vous jugeriez utile à l'intervention."></textarea>
+            </div>
+
+            <% if(creneaux.length == 0) { %>
+                <div class="alert alert-primary" role="alert">
+                    Malheureusement, plus aucun créneau n'est disponible à la date séléctionnée...
+                </div>
+            <% } %>
+
+            <div id="InputsGroup">
+
+                <% for (creneau of creneaux) { %>
+                <input name="selectedCre" id="cr<%= creneau.idCreneau %>" class="btn btn-primary" type="submit"
+                    value="<%= creneau.heureDebut.replace('00:00','00') %> - <%= creneau.heureFin.replace('00:00','00') %>"></input>
+                <% } %>
+            </div>
+
+        </form>
+    </p>
+
+</div>
+
+<%- include('../footer') -%>

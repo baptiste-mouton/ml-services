@@ -1,0 +1,19 @@
+<%- include('privateHeader') -%>
+
+<h1>Sélectionnez une date : </h1>
+
+
+<form action="/creneau/select" method="post" id="choosenDate">
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Sélectionnez un jour</label>
+        <select name="dateSelection" class="form-control" id="exampleFormControlSelect1">
+            <% for(jour of jours) { %>
+            <option name="choosenDate"> <%= jour.toISOString().slice(0,10) %> </option>
+            <% } %>
+        </select>
+    </div>
+    <button id="dateSelection" type="submit" class="btn btn-primary">Valider</button>
+</form>
+
+
+<%- include('../footer') -%>
