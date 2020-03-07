@@ -32,6 +32,14 @@ class Utilisateur {
             cb(rows);
         })
     }
+
+    static isAdmin(id,cb){
+        connection.query('SELECT estAdmin FROM Utilisateur WHERE idUser = ?',id, (err,rows) => {
+            if(err) throw err
+            cb(rows)
+        })
+    }
+
 }
 
 module.exports = Utilisateur;

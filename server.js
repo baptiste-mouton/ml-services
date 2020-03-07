@@ -23,6 +23,7 @@ app.use('/', require('./routes/home'));
 app.use('/user', require('./routes/user'));
 app.use('/creneau',require('./routes/creneau'));
 app.use('/services', require('./routes/home'));
+app.use('/admin', require('./routes/admin'));
 
 //app.use('/auth',jwt.authentification,require('./routes/auth'));
 //app.use('/auth/user', require('./models/User'));
