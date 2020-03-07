@@ -27,7 +27,7 @@ class Utilisateur {
         })
     }
     static getProfileInfos(values,cb){
-        connection.query('SELECT idUser, emailUser, nomUser, prenomUser FROM Utilisateur WHERE idUser = ? LIMIT 1',values, (err,rows) => {
+        connection.query('SELECT idUser, emailUser, nomUser, prenomUser, rue, codePostal, ville  FROM Utilisateur WHERE idUser = ? LIMIT 1',values, (err,rows) => {
             if(err) throw err
             cb(rows);
         })
@@ -35,6 +35,13 @@ class Utilisateur {
 
     static isAdmin(id,cb){
         connection.query('SELECT estAdmin FROM Utilisateur WHERE idUser = ?',id, (err,rows) => {
+            if(err) throw err
+            cb(rows)
+        })
+    }
+
+    static updateName(values,cb){
+        connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?',values, (err,rows) => {
             if(err) throw err
             cb(rows)
         })

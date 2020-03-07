@@ -17,11 +17,23 @@
         </thead>
         <tbody>
             <% for (intervention of interventions) { %>
-            <td class="table-active"> <%= intervention %> </td>
+
+            <tr>
+                <td class="table-active">
+                    <!-- <form action="/user/reservations" method="POST"> -->
+                        <%= cpt %> - <%= intervention %>
+                        <!-- <%cpt ++ %>
+                        <div class="form-check">
+                            <input class="form-check-input position-static" type="radio" name="blankRadio"
+                                id="blankRadio1" value="<%= intervention %>" aria-label="...">
+                        </div> -->
+                </td>
+            </tr>
             <% } %>
         </tbody>
     </table>
-
+    <!-- <button name="del" id="delButton" type="submit" class="btn btn-danger">Supprimer l'intervention sélectionnée</button>
+    </form> -->
     <% } %>
 
 </div>

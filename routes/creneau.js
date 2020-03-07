@@ -88,7 +88,7 @@ router.post('/select/byDate', jwtUtils.authentification, (req, res) => {
     let choiceCr = req.body.selectedCre;
     let choiceSer = req.body.selectedSer;
     let userId = req.user.userId;
-    let libIntervention = choiceSer + ' pour ' + res.user;
+    let libIntervention = choiceSer;
     let descrInter = null;
 
     if (req.body.descritpionIntervention != undefined && req.body.descritpionIntervention != null) {

@@ -13,7 +13,7 @@ class Creneau {
         var today = new Date();
         var cpt = today.getDay();
         var res = [];
-        for (var i = 0; i < (7 - cpt); i++) {
+        for (var i = 0; i < (14 - cpt); i++) {
             res.push(new Date(today.getFullYear(), today.getMonth(), today.getDate() + i));
         }
         return res; //res contient les jours restants de la semaine actuelle

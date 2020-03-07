@@ -30,3 +30,16 @@
 #dateSelection{
     margin-left: 43%;
 }
+
+#delButton{
+    float : right;
+}
+
+#modifProfil{
+    width: 33%;
+    margin-left: 30%;
+}
+
+#leadProfil{
+    margin-top: 2%;
+}

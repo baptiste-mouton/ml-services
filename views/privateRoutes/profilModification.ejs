@@ -1,0 +1,60 @@
+<%- include('privateHeader') -%>
+
+<div class="jumbotron">
+    <h1 class="display-4">Modifier mon profil</h1>
+    <div class="lead" id="leadProfil">Remplissez le champ à changer et cliquez sur valider.</>
+        <hr class="my-4">
+
+        <div class="registerForm">
+            <form action='/user/profil/modify' method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputFirstName4">Nom</label>
+                        <input name="name" type="text" class="form-control" id="inputFirstName4"
+                            placeholder="<%=user.nomUser%>">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputFirstName4">Prénom</label>
+                        <input name="Prenom" type="text" class="form-control" id="inputSecondName4"
+                            placeholder="<%=user.prenomUser%>">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email</label>
+                        <input name="email" type="email" class="form-control" id="inputEmail4"
+                            placeholder="<%=user.emailUser%>">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">Mot de passe</label>
+                        <input name="password" type="password" class="form-control" id="inputPassword4"
+                            placeholder="Nouveau mot de passe">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Address</label>
+                    <input name="adresse" type="text" class="form-control" id="inputAddress"
+                        placeholder="<%=user.rue%>">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCity">Ville</label>
+                        <input name="ville" type="text" class="form-control" id="inputCity"
+                            placeholder="<%=user.ville%>">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputCp">Code Postal</label>
+                        <input name="codePostal" type="text" class="form-control" id="inputCp"
+                            placeholder="<%=user.codePostal%>">
+                    </div>
+                </div>
+
+        </div>
+        <p class="lead">
+            <button type="submit" id="modifProfil" class="btn btn-primary btn-lg">Modifier mes
+                informations</button>
+        </p>
+        </form>
+    </div>
+</div>
+
+
+<%- include('../footer') -%>
