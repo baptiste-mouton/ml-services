@@ -47,26 +47,9 @@ router.post('/register',
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            //return res.status(400).json({'error': 'Missing or wrong parameters'});
             return res.status(409).render('register', { 'error': 'Complétez tous les champs avant de soumettre le formulaire. Le mot de passe doit contenir entre 6 et 12 caractères !' });
         }
-        /* Vérifs avec express-validator plus efficace
-        if(lastName == undefined || firstName == undefined || password == undefined || email == undefined || st == undefined || zip == undefined || city == undefined){
-            return res.status(400).json({'error': 'missing parameters'});
-        }
-    
-        if (lastName.length > 12 || lastName.length < 2) {
-            return res.status(400).json({'error': 'Le nom doit contenir entre 2 et 12 carractères'});
-        }
-    
-        if(!EMAIL_REGEX.test(email)){
-            return res.status(400).json({'error': 'L\'email n\'est pas conforme'});
-        }
-    
-        if(!PASSWORD_REGEX.test(password)){
-            return res.status(400).json({'error': 'Le mot de passe n\'est pas conforme. (Il doit contenir entre 4 et 8 caractères dont au moins 1 chiffre!)'});
-        } */
-        
+
         let User = require('../models/User')
         User.findByMail(email, (users) => {
             if (users[0] == undefined) {
