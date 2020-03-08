@@ -106,7 +106,6 @@ router.post('/login',
         const errors = validationResult(req);
         console.log(errors);
         if (!errors.isEmpty()) {
-            //return res.status(400).json({'error': 'Missing or wrong parameters'});
             return res.status(400).render('login', { 'error': 'Complétez tous les champs avant de soumettre le formulaire.' });
         }
 
@@ -123,9 +122,9 @@ router.post('/login',
                         httpOnly: true,
                         maxAge: 60 * 60 // 1h
                     }));
-
-                    if (users[0].isAdmin == 1) {
-                        return res.status(302).redirect('/admin');
+                    console.log(users[0].estAdmin)
+                    if (users[0].estAdmin == 1) {
+                        return res.status(302).redirect('/user/admin');
                     } else {
                         return res.status(302).redirect('/user');
                     }
@@ -136,5 +135,10 @@ router.post('/login',
             }
         })
     });
+
+    router.get('/admin',jwtUtils.isAdmin, (req,res) => {
+        res.render('/privateRoutes/adminsHomePage');
+
+    })
 
 module.exports = router;

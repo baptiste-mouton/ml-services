@@ -26,6 +26,35 @@ router.get('/', jwtUtils.authentification, (req, res) => {
     })
 })
 
+router.get('/admin',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
+    var userId = req.user.userId;
+    User.getProfileInfos(userId, (user) => {
+        if (user[0] != undefined) {
+            res.status(201).render('./privateRoutes/adminsHomePage', { 'user': user[0] });
+        } else {
+            res.status(404).render('index', { 'error': 'Utilisateur invalide.' });
+        }
+    })
+})
+
+router.get('/adminsClients',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
+    var userId = req.user.userId;
+    User.getClients((rows) => {
+        if (rows[0] != undefined) {
+            res.status(201).render('./privateRoutes/adminsClients', { 'clients': rows });
+        } else {
+            res.status(404).render('index', { 'error': 'Utilisateur invalide.' });
+        }
+    })
+})
+
+router.post('/adminsClients',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
+    let idUser = req.body.idU;
+    User.setAdmin(idUser, (rows) => {
+        res.redirect('/user/adminsClients')
+    })
+})
+
 router.get('/profil', jwtUtils.authentification, (req, res) => {
     /*var headerAuth = req.headers['authorization'];
     console.log(headerAuth)
@@ -45,6 +74,7 @@ router.get('/profil', jwtUtils.authentification, (req, res) => {
         }
     })*/
 
+    console.log(req.user)
 
     var userId = req.user.userId;
     User.getProfileInfos(userId, (user) => {
@@ -74,8 +104,8 @@ router.post('/profil/modify', jwtUtils.authentification,
         check('email').isEmail().normalizeEmail(),
     ],
     (req, res) => {
-        console.log(req.body)
-        let errors = validationResult(req.body.email)
+        console.log(req.body);
+        
 
         if (req.body.name != '' && req.body.name.length > 2) {
             let values = [req.body.name, req.user.userId]
@@ -130,13 +160,14 @@ router.post('/profil/modify', jwtUtils.authentification,
             });
         }
 
+        
+
         res.status(200).redirect('/user/profil/modify');
     })
 
 router.get('/reservations', jwtUtils.authentification, (req, res) => {
     //get toutes les réservations dont la date est > ajd
     Intervention.getInterToComeByClient(req.user.userId, (interventions) => {
-        //console.log(interventions);
         let results = [];
         let inter = [];
         let cpt = 1;

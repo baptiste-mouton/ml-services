@@ -1,0 +1,14 @@
+<%- include('privateHeader') -%>
+
+<div class="jumbotron">
+    <h4 class="display-4">Bienvenue sur votre espace réservé MLServices admin, <%= user.prenomUser %>
+        <%= user.nomUser %>.
+        </h4>
+        <hr class="my-4">
+        <p>Dans cet espace, vous pouvez prendre rendez-vous pour une intervention, consulter les interventions à venir.
+            Vous pouvez aussi consulter ou modifier votre profil dans l'onglet "Mon profil", mais aussi gérer vos
+            clients en cliquant sur "Gérer mes clients".</p>
+        <a class="btn btn-primary btn-lg" href="./adminsClients" role="button">Gérer mes clients</a>
+</div>
+
+<%- include('../footer.ejs') -%>

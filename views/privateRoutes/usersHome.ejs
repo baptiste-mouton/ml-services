@@ -1,6 +1,12 @@
 <%- include('privateHeader') -%>
 
-<h1> Welcome to MLServices, <%= user.prenomUser %> <%= user.nomUser %>.</h1>
+<div class="jumbotron">
+    <h4 class="display-4">Bienvenue sur votre espace réservé MLServices, <%= user.prenomUser %> <%= user.nomUser %>.
+        </h1>
+        <hr class="my-4">
+        <p>Dans cet espace, vous pouvez prendre rendez-vous pour une intervention, consulter les interventions à venir.
+            Vous pouvez aussi consulter ou modifier votre profil dans l'onglet "Mon profil".</p>
+</div>
 
 
 <%- include('../footer') -%>

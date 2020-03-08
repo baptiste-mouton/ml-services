@@ -1,0 +1,62 @@
+<%- include('privateHeader') -%>
+
+<div class="jumbotron">
+    <h4 class="display-4">Espace de gestion de clients </h4>
+    <hr class="my-4">
+    <p>Mes clients : </p>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <th scope="col">Identifiant</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">estAdmin</th>
+        </thead>
+        <tbody>
+            <% for (client of clients) { %>
+
+            <tr>
+                <td class="table-active">
+                    <%= client.idUser %>
+                </td>
+                <td class="table-active">
+                    <%= client.nomUser %>
+                </td>
+                <td class="table-active">
+                    <%= client.prenomUser %>
+                </td>
+                <td class="table-active">
+                    <%= client.estAdmin %>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+    <a class="btn btn-primary btn-lg" href="./adminsClients" role="button">Gérer mes clients</a>
+</div>
+
+<div class="jumbotron">
+    <h5 class="display-4">Donner les droits d'admin à un utilisateur : </h5>
+    <p>Sélectionnez le nom de l'utilisateur auquel donner les droits puis validez.</p>
+    <hr class="my-4">
+
+    <form action="/user/adminsClients" method="POST">
+
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Sélection utilisateur par leur identifiant</label>
+            <select name="idU" class="form-control" id="exampleFormControlSelect1">
+                <% for (client of clients) { %>
+                <option><%= client.idUser %></option>
+                <%} %>
+            </select>
+            
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Valider</button>
+
+    </form>
+</div>
+
+
+
+
+
+<%- include('../footer.ejs') -%>

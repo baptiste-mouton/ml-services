@@ -49,8 +49,8 @@ module.exports = {
             try {
                 var parsedToken = module.exports.parseAuthorization(token);
                 const verified = jwt.verify(parsedToken, TOKEN_SECRET);
-                if (parsedToken.isAdmin == 1) {
-                    req.user = verifiedAdmin;
+                if (verified.isAdmin == 1) {
+                    req.user = verified;
                     next();
                 } else {
                     res.status(400).send('Vous n\'êtes pas connecté en tant qu\'administrateur.')

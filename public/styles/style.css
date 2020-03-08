@@ -1,3 +1,4 @@
+
 .container{
     margin-top: 3%;
     min-height: 100%;
@@ -12,6 +13,7 @@
 
 .reservationsDisplay{
     margin:3%;
+    height: 100%;
 }
 
 #InputsGroup * {
