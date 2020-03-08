@@ -15,7 +15,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputFirstName4">Prénom</label>
-                        <input name="Prenom" type="text" class="form-control" id="inputSecondName4"
+                        <input name="prenom" type="text" class="form-control" id="inputSecondName4"
                             placeholder="<%=user.prenomUser%>">
                     </div>
                     <div class="form-group col-md-6">
@@ -46,9 +46,13 @@
                             placeholder="<%=user.codePostal%>">
                     </div>
                 </div>
-
         </div>
+
         <p class="lead">
+            <div class="alert alert-warning" role="alert">
+                Attention : les champs que vous modifiez seront changés à conditions qu'ils soient valides (le mot de
+                passe doit faire entre 6 et 12 caractères et il faut saisir une adresse mail valide).
+            </div>
             <button type="submit" id="modifProfil" class="btn btn-primary btn-lg">Modifier mes
                 informations</button>
         </p>

@@ -66,8 +66,7 @@ router.post('/register',
         if(!PASSWORD_REGEX.test(password)){
             return res.status(400).json({'error': 'Le mot de passe n\'est pas conforme. (Il doit contenir entre 4 et 8 caractères dont au moins 1 chiffre!)'});
         } */
-
-        console.log(email);
+        
         let User = require('../models/User')
         User.findByMail(email, (users) => {
             if (users[0] == undefined) {

@@ -1,9 +1,12 @@
 let express = require('express');
 let router = express.Router();
+let bcrypt = require('bcrypt');
 let jwtUtils = require('../utils/jwt.utils')
 let cookie = require('cookie');
 let Intervention = require('../models/Intervention');
 let Creneau = require('../models/Creneau');
+let User = require('../models/User');
+let { check, validationResult } = require('express-validator');
 
 //const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
@@ -12,7 +15,6 @@ let Creneau = require('../models/Creneau');
 //ROUTES : 
 //User's Home:
 router.get('/', jwtUtils.authentification, (req, res) => {
-    let User = require('../models/User');
     var userId = req.user.userId;
     User.getProfileInfos(userId, (user) => {
         if (user[0] != undefined) {
@@ -33,7 +35,7 @@ router.get('/profil', jwtUtils.authentification, (req, res) => {
         return res.status(400).json({'error': 'Wrong token!'});
     }
     
-    let User = require('../models/User');
+    
     User.getProfileInfos(userId, (user) => {
         if(user[0] != undefined){
             res.status(201).json(user[0]);
@@ -43,7 +45,7 @@ router.get('/profil', jwtUtils.authentification, (req, res) => {
         }
     })*/
 
-    let User = require('../models/User');
+
     var userId = req.user.userId;
     User.getProfileInfos(userId, (user) => {
         if (user[0] != undefined) {
@@ -56,7 +58,6 @@ router.get('/profil', jwtUtils.authentification, (req, res) => {
 });
 
 router.get('/profil/modify', jwtUtils.authentification, (req, res) => {
-    let User = require('../models/User');
     var userId = req.user.userId;
     User.getProfileInfos(userId, (user) => {
         if (user[0] != undefined) {
@@ -68,28 +69,69 @@ router.get('/profil/modify', jwtUtils.authentification, (req, res) => {
     })
 })
 
-router.post('/profil/modify',jwtUtils.authentification, (req,res) => {
-    let User = require('../models/User');
-    var datas = [];
-    console.log(req.body)
-    datas.push(req.body.name);
-    datas.push(req.body.Prenom);
-    datas.push(req.body.email);
-    datas.push(req.body.password);
-    datas.push(req.body.adresse);
-    datas.push(req.body.ville);
-    datas.push(req.body.codePostal);
-    console.log(datas);
-    //console.log(req.body);
-    if(req.body.name != null){
-        let values = [req.body.name,req.user.userId]
+router.post('/profil/modify', jwtUtils.authentification,
+    [
+        check('email').isEmail().normalizeEmail(),
+    ],
+    (req, res) => {
+        console.log(req.body)
+        let errors = validationResult(req.body.email)
 
-        User.updateName(values, (rows) => {
-            console.log(rows);
-        });
-    }
-    res.status(200).redirect('/user/profil/modify');
-})
+        if (req.body.name != '' && req.body.name.length > 2) {
+            let values = [req.body.name, req.user.userId]
+            User.updateNom(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.prenom != '' && req.body.prenom.length > 2) {
+            let values = [req.body.prenom, req.user.userId];
+            User.updatePrenom(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.email != '@' && errors.isEmpty()) {
+            let values = [req.body.email, req.user.userId];
+            User.updateEmail(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.password != '' && req.body.password.length > 6 && req.body.password.length < 12) {
+
+            let salt = bcrypt.genSaltSync(10);
+            let hashedPassword = bcrypt.hashSync(req.body.password, salt);
+
+            let values = [hashedPassword, req.user.userId];
+            User.updatePassword(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.adresse != '') {
+            let values = [req.body.adresse, req.user.userId];
+            User.updateAdresse(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.ville != '') {
+            let values = [req.body.ville, req.user.userId];
+            User.updateVille(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        if (req.body.codePostal != '') {
+            let values = [req.body.codePostal, req.user.userId];
+            User.updateCodePostal(values, (rows) => {
+                console.log(rows);
+            });
+        }
+
+        res.status(200).redirect('/user/profil/modify');
+    })
 
 router.get('/reservations', jwtUtils.authentification, (req, res) => {
     //get toutes les réservations dont la date est > ajd
