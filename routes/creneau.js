@@ -9,7 +9,6 @@ let jwtUtils = require('../utils/jwt.utils');
 //ROUTES : 
 
 router.get('/select', jwtUtils.authentification, (req, res) => {
-    let Creneau = require('../models/creneau');
     let week = Creneau.datesSemaineActuelle();
     // console.log(week);
     //Afficher tous les créneaux possibles sur la page :

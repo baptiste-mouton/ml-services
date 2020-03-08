@@ -40,7 +40,25 @@ class Utilisateur {
         })
     }
 
-    static updateName(values,cb){
+    static updateNom(values,cb){
+        connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?',values, (err,rows) => {
+            if(err) throw err
+            cb(rows)
+        })
+    }
+    static updatePrenom(values,cb){
+        connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?',values, (err,rows) => {
+            if(err) throw err
+            cb(rows)
+        })
+    }
+    static updateEmail(values,cb){
+        connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?',values, (err,rows) => {
+            if(err) throw err
+            cb(rows)
+        })
+    }
+    static update(values,cb){
         connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?',values, (err,rows) => {
             if(err) throw err
             cb(rows)
