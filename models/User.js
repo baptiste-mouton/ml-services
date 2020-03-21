@@ -5,7 +5,7 @@ class Utilisateur {
     static create(values, cb) {
         connection.query('INSERT INTO Utilisateur SET ? ;', values, (err, rows) => {
             if (err) throw err
-            cb(rows)
+            //cb(rows)
         })
     }
     static all(cb) {

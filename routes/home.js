@@ -66,10 +66,10 @@ router.post('/register',
                     ville: city,
                     estAdmin: 0
                 }
-                User.create(values, (rows) => {
-                    res.json({ 'userId = ': rows.insertId });
-                })
-                res.redirect('/')
+                User.create(values);
+
+                res.status(302).redirect('/')
+                return res.end();
             } else {
                 return res.status(409).render('register', { 'error': 'Cet addresse mail est déjà utilisée.' });
             }
