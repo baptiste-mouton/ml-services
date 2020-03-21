@@ -1,29 +1,33 @@
+<% if(user.estAdmin) { %>
+<%-include('adminsHeader')-%>
+<%}else {%>
 <%- include('privateHeader') -%>
+<%}%>
 
 <div class="jumbotron">
     <h1 class="display-4">Bienvenue sur votre profil, <%= user.prenomUser %>. </h1>
-    <div class="lead" id="leadProfil">Retrouvez et modifier toutes les informations qui vous concernent !</>
-        <hr class="my-4">
-        <div class="profileContent">
-            <p>
-                <b> Nom : </b> <%= user.nomUser %>
-            </p>
-            <p>
-                <b> Prénom : </b> <%= user.prenomUser %>
-            </p>
-            <p>
-                <b> Email : </b> <%= user.emailUser %>
-            </p>
-            <p>
-                <b> Adressse : </b> <%= (user.rue) %> <%= (user.codePostal) %> <%= (user.ville) %> 
-                 
-            </p>
-        </div>
-        <p class="lead">
-            <a id="modifProfil" class="btn btn-primary btn-lg" href="/user/profil/modify" role="button">Modifier mes
-                informations</a>
+<div class="lead" id="leadProfil">Retrouvez et modifier toutes les informations qui vous concernent !</>
+    <hr class="my-4">
+    <div class="profileContent">
+        <p>
+            <b> Nom : </b> <%= user.nomUser %>
+        </p>
+        <p>
+            <b> Prénom : </b> <%= user.prenomUser %>
+        </p>
+        <p>
+            <b> Email : </b> <%= user.emailUser %>
+        </p>
+        <p>
+            <b> Adressse : </b> <%= (user.rue) %> <%= (user.codePostal) %> <%= (user.ville) %>
+
         </p>
     </div>
+    <p class="lead">
+        <a id="modifProfil" class="btn btn-primary btn-lg" href="/user/profil/modify" role="button">Modifier mes
+            informations</a>
+    </p>
+</div>
 </div>
 
 

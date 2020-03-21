@@ -27,75 +27,81 @@ class Utilisateur {
         })
     }
     static getProfileInfos(values, cb) {
-        connection.query('SELECT idUser, emailUser, nomUser, prenomUser, rue, codePostal, ville  FROM Utilisateur WHERE idUser = ? LIMIT 1', values, (err, rows) => {
+        connection.query('SELECT idUser, emailUser, nomUser, prenomUser, rue, codePostal, ville, estAdmin  FROM Utilisateur WHERE idUser = ? LIMIT 1', values, (err, rows) => {
             if (err) throw err
             cb(rows);
         })
     }
-    static getClients(cb){
-        connection.query('SELECT * FROM Utilisateur',(err,rows)=>{
-            if(err) throw err
+    static getClients(cb) {
+        connection.query('SELECT * FROM Utilisateur', (err, rows) => {
+            if (err) throw err
             cb(rows);
         })
     }
-    static setAdmin(id,cb){
-        connection.query('UPDATE Utilisateur SET estAdmin = 1 WHERE idUser = ?',id, (err,rows) => {
-            if(err) throw err
+    static setAdmin(id, cb) {
+        connection.query('UPDATE Utilisateur SET estAdmin = 1 WHERE idUser = ?', id, (err, rows) => {
+            if (err) throw err
+            cb(rows);
+        })
+    }
+    static delUser(id, cb) {
+        connection.query('DELETE FROM Utilisateur WHERE idUser = ?', id, (err, rows) => {
+            if (err) throw err
             cb(rows);
         })
     }
 
     static isAdmin(id, cb) {
-        connection.query('SELECT estAdmin FROM Utilisateur WHERE idUser = ?', id, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('SELECT estAdmin FROM Utilisateur WHERE idUser = ?', id, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
 
     //FAIRE UNE FONCTION QUI REGROUPE TOUS LES UPDATES
 
     static updateNom(values, cb) {
-        connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET nomUser = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updatePrenom(values, cb) {
-        connection.query('UPDATE utilisateur SET prenomUser = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET prenomUser = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updateEmail(values, cb) {
-        connection.query('UPDATE utilisateur SET emailUser = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET emailUser = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updateAdresse(values, cb) {
-        connection.query('UPDATE utilisateur SET rue = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET rue = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updateVille(values, cb) {
-        connection.query('UPDATE utilisateur SET ville = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET ville = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updateCodePostal(values, cb) {
-        connection.query('UPDATE utilisateur SET codePostal = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET codePostal = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
     static updatePassword(values, cb) {
-        connection.query('UPDATE utilisateur SET password = ? WHERE idUser = ?', values, (err, rows) => {
-            if (err) throw err
-            cb(rows)
-        })
-    }
+            connection.query('UPDATE utilisateur SET password = ? WHERE idUser = ?', values, (err, rows) => {
+                if (err) throw err
+                cb(rows)
+            })
+        }
 
 }
 

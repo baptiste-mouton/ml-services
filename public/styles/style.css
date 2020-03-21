@@ -5,6 +5,10 @@
     margin-bottom: 15%;
 }
 
+#delButton{
+    float : right;
+}
+
 #displayServices{
     width:100%;
     display: flex;

@@ -1,4 +1,4 @@
-<%- include('privateHeader') -%>
+<%- include('adminsHeader') -%>
 
 <div class="jumbotron">
     <h4 class="display-4">Espace de gestion de clients </h4>
@@ -10,6 +10,7 @@
             <th scope="col">Nom</th>
             <th scope="col">Prénom</th>
             <th scope="col">estAdmin</th>
+            <th scope="col">Action</th>
         </thead>
         <tbody>
             <% for (client of clients) { %>
@@ -27,11 +28,15 @@
                 <td class="table-active">
                     <%= client.estAdmin %>
                 </td>
+                <td class="table-active">
+                    <form action="/user/admin/clients" method="POST">
+                        <button name="supp" type="submit" class="btn btn-danger mb-2" value="<%=client.idUser%>">Supprimer</button>
+                    </form>
+                </td>
             </tr>
             <% } %>
         </tbody>
     </table>
-    <a class="btn btn-primary btn-lg" href="./adminsClients" role="button">Gérer mes clients</a>
 </div>
 
 <div class="jumbotron">
@@ -39,7 +44,7 @@
     <p>Sélectionnez le nom de l'utilisateur auquel donner les droits puis validez.</p>
     <hr class="my-4">
 
-    <form action="/user/adminsClients" method="POST">
+    <form action="/user/admin/clients" method="POST">
 
         <div class="form-group">
             <label for="exampleFormControlSelect1">Sélection utilisateur par leur identifiant</label>

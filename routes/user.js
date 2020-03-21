@@ -26,7 +26,7 @@ router.get('/', jwtUtils.authentification, (req, res) => {
     })
 })
 
-router.get('/admin',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
+router.get('/admin', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => {
     var userId = req.user.userId;
     User.getProfileInfos(userId, (user) => {
         if (user[0] != undefined) {
@@ -37,7 +37,21 @@ router.get('/admin',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
     })
 })
 
-router.get('/adminsClients',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
+router.get('/admin/reservations', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => {
+    Intervention.getInterToComeByClient(req.user.userId, (interventions) => {
+        let results = [];
+        let inter = [];
+        let cpt = 1;
+        for (intervention of interventions) {
+            let creneauI = Creneau.StringFromId(intervention.Creneau_idCreneau);
+            results.push("'" + intervention.libelleIntervention + "'" + " le " + intervention.dateIntervention.toISOString().slice(0, 10) + " sur le créneau " + creneauI);
+            inter.push(intervention);
+        }
+        res.status(201).render('./privateRoutes/adminsReservations', { 'interventions': results, 'cpt': cpt, 'datas': inter });
+    })
+})
+
+router.get('/admin/clients', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => {
     var userId = req.user.userId;
     User.getClients((rows) => {
         if (rows[0] != undefined) {
@@ -48,11 +62,18 @@ router.get('/adminsClients',jwtUtils.authentification,jwtUtils.isAdmin, (req,res
     })
 })
 
-router.post('/adminsClients',jwtUtils.authentification,jwtUtils.isAdmin, (req,res) => {
-    let idUser = req.body.idU;
-    User.setAdmin(idUser, (rows) => {
-        res.redirect('/user/adminsClients')
-    })
+router.post('/admin/clients', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => {
+    if (req.body.idU != undefined) {
+        let idUser = req.body.idU;
+        User.setAdmin(idUser, (rows) => {
+            res.redirect('/user/admin/clients')
+        })
+    } else if (req.body.supp != undefined){
+        let idUser = req.body.supp;
+        User.delUser(idUser, (rows) =>{
+            res.redirect('/user/admin/clients')
+        })
+    }
 })
 
 router.get('/profil', jwtUtils.authentification, (req, res) => {
@@ -105,7 +126,7 @@ router.post('/profil/modify', jwtUtils.authentification,
     ],
     (req, res) => {
         console.log(req.body);
-        
+
 
         if (req.body.name != '' && req.body.name.length > 2) {
             let values = [req.body.name, req.user.userId]
@@ -160,7 +181,7 @@ router.post('/profil/modify', jwtUtils.authentification,
             });
         }
 
-        
+
 
         res.status(200).redirect('/user/profil/modify');
     })
