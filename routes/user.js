@@ -38,13 +38,13 @@ router.get('/admin', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => 
 })
 
 router.get('/admin/reservations', jwtUtils.authentification, jwtUtils.isAdmin, (req, res) => {
-    Intervention.getInterToComeByClient(req.user.userId, (interventions) => {
+    Intervention.getInterToComeByAdmin((interventions) => {
         let results = [];
         let inter = [];
         let cpt = 1;
         for (intervention of interventions) {
             let creneauI = Creneau.StringFromId(intervention.Creneau_idCreneau);
-            results.push("'" + intervention.libelleIntervention + "'" + " le " + intervention.dateIntervention.toISOString().slice(0, 10) + " sur le créneau " + creneauI);
+            results.push("'" + intervention.libelleIntervention + "'" + " le " + intervention.dateIntervention.toISOString().slice(0, 10) + " sur le créneau " + creneauI + " pour client numéro "+intervention.Utilisateur_idUser);
             inter.push(intervention);
         }
         res.status(201).render('./privateRoutes/adminsReservations', { 'interventions': results, 'cpt': cpt, 'datas': inter });

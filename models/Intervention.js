@@ -23,6 +23,12 @@ class Intervention {
             cb(rows)
         })
     }
+    static getInterToComeByAdmin(cb){
+        connection.query('SELECT * FROM Intervention WHERE dateIntervention >= CURRENT_DATE', (err, rows) => {
+            if (err) throw err
+            cb(rows)
+        })
+    }
 
 }
 module.exports = Intervention;
